@@ -21,6 +21,9 @@ class RabbitWorkersProducer(
         private val rabbitTemplate: RabbitTemplate,
         @Value("\${ks.rabbitmq.exchange.works-queue}")
         val exchange: String,
-) {
+): RabbitProducer {
 
+    override fun send(id: Long, dto: CoffeeDto){
+        rabbitTemplate.convertAndSend(exchange, "${roundKeyPrefix}${id}", dto)
+    }
 }

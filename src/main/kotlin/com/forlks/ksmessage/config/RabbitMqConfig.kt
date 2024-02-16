@@ -29,11 +29,11 @@ class RabbitMqConfig(
         val password: String,
         @Value("\${ks.rabbitmq.exchange.round-robin}")
         val robinExchange: String,
-        @Value("\${{ks.rabbitmq.queue.round-robin}")
+        @Value("\${ks.rabbitmq.queue.round-robin}")
         val robinQueue: String,
         @Value("\${ks.rabbitmq.exchange.works-queue}")
         val worksExchange: String,
-        @Value("\${{ks.rabbitmq.queue.works-queue}")
+        @Value("\${ks.rabbitmq.queue.works-queue}")
         val worksQueue: String
 ) {
     private val log = KotlinLogging.logger{}
@@ -62,7 +62,7 @@ class RabbitMqConfig(
     @Bean
     fun topicBinding(worksExchange: TopicExchange,worksQueue: Queue): Binding {
         val bind = BindingBuilder.bind(worksQueue)
-                .to(worksExchange).with("order.#")
+                .to(worksExchange).with("order.*")
         log.info { "topicBinding ::: $bind" }
         return bind
     }

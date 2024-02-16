@@ -50,9 +50,9 @@ enum class KsResponse(private val code: Int, private val statusCode: String, pri
     }
 
     //default
-    fun <T> toResponse(): ResponseEntity<KstadimuResponseEntity> {
+    fun <T> toResponse(): ResponseEntity<KsResponseEntity> {
         return ResponseEntity(
-            KstadimuResponseEntity(
+            KsResponseEntity(
                 code = this.code,
                 message = errorMessage,
                 statusCode = statusCode,
@@ -62,9 +62,9 @@ enum class KsResponse(private val code: Int, private val statusCode: String, pri
     }
 
     //성공 데이터 바인딩용
-    fun <T> toDataResponse(data: T): ResponseEntity<KstadimuResponseEntity> {
+    fun <T> toDataResponse(data: T): ResponseEntity<KsResponseEntity> {
         return ResponseEntity(
-            KstadimuResponseEntity(
+            KsResponseEntity(
                 code = this.code,
                 message = errorMessage,
                 statusCode = statusCode,
@@ -74,9 +74,9 @@ enum class KsResponse(private val code: Int, private val statusCode: String, pri
         )
     }
 
-    fun <T> toDataResponse(data: T, count: Int?): ResponseEntity<KstadimuResponseEntity> {
+    fun <T> toDataResponse(data: T, count: Int?): ResponseEntity<KsResponseEntity> {
         return ResponseEntity(
-            KstadimuResponseEntity(
+            KsResponseEntity(
                 code = this.code,
                 message = errorMessage,
                 statusCode = statusCode,
@@ -87,10 +87,10 @@ enum class KsResponse(private val code: Int, private val statusCode: String, pri
     }
 
     //error msg 세팅용
-    fun <T> toMsgResponse(errMsg: String?): ResponseEntity<KstadimuResponseEntity> {
+    fun <T> toMsgResponse(errMsg: String?): ResponseEntity<KsResponseEntity> {
 
         return ResponseEntity(
-            KstadimuResponseEntity(
+            KsResponseEntity(
                 code = this.code,
                 message = errMsg,
                 statusCode = statusCode,
