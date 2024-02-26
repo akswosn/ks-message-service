@@ -1,4 +1,4 @@
-package com.forlks.message.ksmessageservice
+package com.forlks.ksmessage
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
