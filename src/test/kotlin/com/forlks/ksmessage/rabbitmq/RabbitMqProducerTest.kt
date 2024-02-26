@@ -1,6 +1,5 @@
-package com.forlks.message.ksmessageservice.rabbitmq
+package com.forlks.ksmessage.rabbitmq
 
-import com.forlks.message.ksmessageservice.config.RabbitmqProducer
 import mu.KotlinLogging
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -16,7 +15,7 @@ import java.lang.Exception
 class RabbitMqProducerTest {
 
     @Autowired
-    lateinit var rabbitmqProducer: RabbitmqProducer
+    lateinit var rabbitTemplate: RabbitTemplate
     private val log = KotlinLogging.logger{}
 
     @Test
@@ -25,7 +24,6 @@ class RabbitMqProducerTest {
             val exchangeName = "testExchange"
             val key = "testQueue"
 
-            val rabbitTemplate = rabbitmqProducer.getRabbitTemplate()
             rabbitTemplate.convertAndSend(exchangeName, key, "Hello Ks Message Service")
             log.info { "Success" }
         } catch (e: Exception) {
