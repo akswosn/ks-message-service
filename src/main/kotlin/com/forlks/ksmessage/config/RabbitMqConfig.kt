@@ -3,19 +3,18 @@ package com.forlks.ksmessage.config
 import com.rabbitmq.client.Recoverable
 import com.rabbitmq.client.RecoveryListener
 import mu.KotlinLogging
-import org.springframework.amqp.core.Binding
-import org.springframework.amqp.core.BindingBuilder
-import org.springframework.amqp.core.FanoutExchange
-import org.springframework.amqp.core.Queue
-import org.springframework.amqp.core.TopicExchange
+import org.springframework.amqp.core.*
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
 import org.springframework.amqp.support.converter.MessageConverter
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+
 
 @Configuration
 class RabbitMqConfig(
@@ -67,15 +66,15 @@ class RabbitMqConfig(
         return bind
     }
 
-    @Bean
-    fun fanOutBinding(roundRobinExchange: FanoutExchange,roundRobinQueue: Queue): Binding {
-        val bind =
-                BindingBuilder.bind(roundRobinQueue)
-                        .to(roundRobinExchange)
-        log.info { "fanOutBinding ::: $bind" }
-
-        return bind
-    }
+//    @Bean
+//    fun fanOutBinding(roundRobinExchange: FanoutExchange,roundRobinQueue: Queue): Binding {
+//        val bind =
+//                BindingBuilder.bind(roundRobinQueue)
+//                        .to(roundRobinExchange)
+//        log.info { "fanOutBinding ::: $bind" }
+//
+//        return bind
+//    }
 
     @Bean
     fun rabbitTemplate(connectionFactory: ConnectionFactory): RabbitTemplate
@@ -83,6 +82,26 @@ class RabbitMqConfig(
         val rabbitTemplate = RabbitTemplate(connectionFactory)
         rabbitTemplate.messageConverter = messageConverter()
         return rabbitTemplate
+    }
+
+    @Bean
+    fun container(connectionFactory: ConnectionFactory?,
+                  listenerAdapter: MessageListenerAdapter?): SimpleMessageListenerContainer {
+        val container = SimpleMessageListenerContainer()
+        container.connectionFactory = connectionFactory!!
+        container.setQueueNames(robinQueue)
+        container.setMessageListener(listenerAdapter!!)
+        return container
+    }
+
+    @Bean
+    fun listenerAdapter(receiver: RabbitMqRobinReceiver?): MessageListenerAdapter {
+        return MessageListenerAdapter(receiver, "receiveMessage")
+    }
+
+    @Bean
+    fun receiver(): RabbitMqRobinReceiver {
+        return RabbitMqRobinReceiver()
     }
 
     @Bean
