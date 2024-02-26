@@ -99,10 +99,10 @@ class RabbitMqConfig(
         return MessageListenerAdapter(receiver, "receiveMessage")
     }
 
-    @Bean
-    fun receiver(): RabbitMqRobinReceiver {
-        return RabbitMqRobinReceiver()
-    }
+//    @Bean
+//    fun receiver(): RabbitMqRobinReceiver {
+//        return RabbitMqRobinReceiver()
+//    }
 
     @Bean
     fun connectionFactory(): ConnectionFactory
